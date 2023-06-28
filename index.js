@@ -1,65 +1,74 @@
+// Variables read files saves 
+
 const fs = require('fs');
 const inquirer = require('inquirer');
-const { circle, triangle, square } = require('./lib/shapes.js')
+const { Circle, Triangle, Square } = require('./lib/shapes.js');
+const opn = require('opn');
 
-inquirer
-    .prompt([
-        {
-            type: 'input',
-            //name property represent the value that was inputed by the user.
-            name: 'text',
-            message: 'What 3 characters do you want to enter?',
-            validate: (text) =>
-                text.length <= 3 || 'Please enter 3 characters',
-        },
+// Function to generate the logo based on user inputs
+const generateLogo = (text, textColor, shape, shapeColor) => {
+  //variable 
+    let shapeClass;
+  
+  // Determine the shape class based on the user's selection
+  if (shape === 'circle') {
+    shapeClass = new Circle();
+  }
+  if (shape === 'square') {
+    shapeClass = new Square();
+  }
+  if (shape === 'triangle') {
+    shapeClass = new Triangle();
+  }
+  
+  // Set the shape's color based on the user's selection
+  shapeClass.pickColor(shapeColor);
 
-        {
-            type: 'input',
-            //language property prompt the user to select the the choices of language.
-            name: 'color',
-            message: 'What color do you want?',
-        },
+  // Read the logo template file
+  fs.readFile('./logo/logo_template.svg', 'utf8', (err, data) => {
+    if (err) throw err;
 
-        {
-            type: 'list',
-            name: 'shape',
-            message: 'Please select one of the shape of your choice?',
-            choices: ['circle', 'triangle', 'square']
-        },
+    // Replace placeholders in the logo template with user inputs and rendered shape
+    const logoCode = data
+      .replace('{{text}}', text)
+      .replace('{{textColor}}', textColor)
+      .replace('{{shape}}', shapeClass.render());
 
-        {
-            type: 'input',
-            name: 'shapeColor',
-            message: 'What is your preferred shape color?',
-        },
-    ])
+    // Write the generated logo code to the logo.svg file
+    fs.writeFile('./svg/logo.svg', logoCode, (err) => {
+      if (err) throw err;
+      
+      // Open the logo.svg file in the default browser
+      opn('./svg/logo.svg').then(() => console.log('Logo opened successfully!'));
+    });
+  });
+};
 
-    .then(({ text, color, shape, shapeColor }) => {
-
-        let shapeClass;
-        if (shape === 'circle') {
-            shapeClass = new circle()
-        }
-
-        if (shape === 'square') {
-            shapeClass = new square()
-        }
-
-        if (shape === 'triangle') {
-            shapeClass = new triangle()
-        }
-            shapeClass.pickColor(shapeColor);
-
-
-
-
-
-
-
-
-
-        fs.writeFile('./svg/logo.svg', shapeClass.render(), (err) => {
-            if (err) throw err;
-        })
-    }
-    )
+// Prompt the user for input using Inquirer
+inquirer.prompt([
+  {
+    type: 'input',
+    name: 'text',
+    message: 'What 3 characters do you want to enter?',
+    validate: (text) => text.length === 3 || 'Please enter 3 characters',
+  },
+  {
+    type: 'input',
+    name: 'color',
+    message: 'What color do you want?',
+  },
+  {
+    type: 'list',
+    name: 'shape',
+    message: 'Please select one of the shapes of your choice?',
+    choices: ['circle', 'triangle', 'square'],
+  },
+  {
+    type: 'input',
+    name: 'shapeColor',
+    message: 'What is your preferred shape color?',
+  },
+]).then(({ text, color, shape, shapeColor }) => {
+  // Call the generateLogo function with user inputs
+  generateLogo(text, color, shape, shapeColor);
+});
