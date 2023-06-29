@@ -6,8 +6,8 @@ The SVG Logo Generator is a command-line application that allows freelance web d
 
 
 ## Screenshots
-![Screenshot 1](./Assets/Screenshot%202023-06-27%20at%209.47.42%20PM.png)
-![Screenshot 2](./Assets/Screenshot%202023-06-27%20at%209.48.00%20PM.png)
+![Screenshot 1](./Assets/Screenshot%202023-06-28%20at%2011.23.47%20PM.png)
+![Screenshot 2](./Assets/Screenshot%202023-06-28%20at%2011.20.48%20PM.png)
 
 ## Features
 
