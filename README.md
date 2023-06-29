@@ -18,6 +18,8 @@ The SVG Logo Generator is a command-line application that allows freelance web d
 - Output the generated logo as an SVG file named `logo.svg`.
 - Open the `logo.svg` file in a browser to view the resulting logo image.
 
+## Video Demo: https://drive.google.com/file/d/1EG_k0NdIVCvroBYrg1dsEUQ9p79TNTM9/view
+
 ## Installation
 
 1. Clone the repository to your local machine.
